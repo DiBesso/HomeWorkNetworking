@@ -10,4 +10,3 @@ import Foundation
 struct Coffee: Decodable {
     var file: String?
 }
-
