@@ -13,7 +13,7 @@ class NetworkingManager {
     private init() {}
     
     func fetchImage(url: String, complition: @escaping(_ image: UIImage) -> Void) {
-        guard let url = URL(string: Link().randomPhoto) else { return }
+        guard let url = URL(string: CoffeeCollectionViewController().randomPhoto) else { return }
         
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data, let _ = response else {
