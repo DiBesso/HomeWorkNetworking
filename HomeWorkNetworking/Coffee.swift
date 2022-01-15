@@ -11,4 +11,6 @@ struct Coffee: Decodable {
     var file: String?
 }
 
-
+struct Link: Decodable {
+    var randomPhoto: String = "https://coffee.alexflipnote.dev/random.json"
+}

@@ -13,7 +13,7 @@ class CoffeeCollectionViewController: UICollectionViewController {
 
     let itemsRow: CGFloat = 2
     let sectionInsets = UIEdgeInsets (top: 20, left: 20, bottom: 20, right: 20)
-    let randomPhoto = "https://coffee.alexflipnote.dev/random.json"
+    var coffees = Coffee ()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,12 +29,11 @@ class CoffeeCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
  
-        return 6
+        return 1
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "coffeeCell", for: indexPath) as! CoffeeCell
-        cell.backgroundColor = .black
         return cell
     }
 
@@ -62,4 +61,26 @@ extension CoffeeCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+//extension CoffeeCollectionViewController {
+//    func fetchCourses() {
+//        guard let url = URL(string: Link().randomPhoto) else { return }
+//
+//        URLSession.shared.dataTask(with: url) { data, _, error in
+//            guard let data = data else {
+//                print(error?.localizedDescription ?? "No error description")
+//                return
+//            }
+//
+//            do {
+//                let coffee = try JSONDecoder().decode(coffees.self, from: data)
+//                DispatchQueue.main.async {
+//                    self.collectionView.reloadData()
+//                }
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+//
+//        }.resume()
        
+    }
+}
