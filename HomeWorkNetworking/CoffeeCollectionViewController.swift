@@ -13,20 +13,10 @@ class CoffeeCollectionViewController: UICollectionViewController {
     let itemsRow: CGFloat = 2
     let sectionInsets = UIEdgeInsets (top: 20, left: 20, bottom: 20, right: 20)
     
-    var randomPhoto: String = "https://coffee.alexflipnote.dev/random.json"
+    var randomPhoto = "https://coffee.alexflipnote.dev/random.json"
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
 
     // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-
-        return 1
-    }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
  
@@ -35,6 +25,8 @@ class CoffeeCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "coffeeCell", for: indexPath) as! CoffeeCell
+        NetworkingManager.shared.fetchImage(url: randomPhoto) { coffee in cell.configure(with: coffee)
+        }
         return cell
     }
 
