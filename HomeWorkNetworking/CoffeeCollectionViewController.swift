@@ -13,6 +13,7 @@ class CoffeeCollectionViewController: UICollectionViewController {
     let itemsRow: CGFloat = 2
     let sectionInsets = UIEdgeInsets (top: 20, left: 20, bottom: 20, right: 20)
     
+    var coffees = [Coffee]()
     var randomPhoto = "https://coffee.alexflipnote.dev/random.json"
     
 
@@ -25,8 +26,8 @@ class CoffeeCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "coffeeCell", for: indexPath) as! CoffeeCell
-        NetworkingManager.shared.fetchImage(url: randomPhoto) { coffee in cell.configure(with: coffee)
-        }
+//        NetworkingManager.shared.fetchImage(url: randomPhoto) { coffee in cell.configure(with: coffee)
+//        }
         return cell
     }
 
@@ -56,25 +57,39 @@ extension CoffeeCollectionViewController: UICollectionViewDelegateFlowLayout {
 
 extension CoffeeCollectionViewController {
     
+    
     func fetchImage() {
-        guard let url = URL(string: randomPhoto) else { return }
-
-        URLSession.shared.dataTask(with: url) { data, _, error in
-            guard let data = data else {
-                print(error?.localizedDescription ?? "No error description")
-                return
+        NetworkingManager.shared.fetchImageWithAlamofire(randomPhoto) { result in
+            switch result {
+            case .success(let coffee):
+                self.coffees = coffee
+                self.collectionView.reloadData()
+            case .failure(let error):
+                print(error)
             }
-
-            do {
-                _ = try JSONDecoder().decode(Coffee.self, from: data)
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            } catch {
-                print(error.localizedDescription)
-            }
-
-        }.resume()
-       
+            
+        }
     }
+    
+//    func fetchImage() {
+//        guard let url = URL(string: randomPhoto) else { return }
+//
+//        URLSession.shared.dataTask(with: url) { data, _, error in
+//            guard let data = data else {
+//                print(error?.localizedDescription ?? "No error description")
+//                return
+//            }
+//
+//            do {
+//                _ = try JSONDecoder().decode(Coffee.self, from: data)
+//                DispatchQueue.main.async {
+//                    self.collectionView.reloadData()
+//                }
+//            } catch {
+//                print(error.localizedDescription)
+//            }
+//
+//        }.resume()
+//
+//    }
 }
