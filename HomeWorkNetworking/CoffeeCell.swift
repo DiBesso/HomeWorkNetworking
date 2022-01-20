@@ -14,13 +14,20 @@ class CoffeeCell: UICollectionViewCell {
     
 
     func configure(with coffees: Coffee ) {
-    DispatchQueue.global().async {
-        guard let url = URL(string: coffees.file ?? "Error") else { return }
-        guard let imageData = try? Data(contentsOf: url) else { return }
-        
-        DispatchQueue.main.async {
-            self.coffeeImageView.image = UIImage(data: imageData)
+        NetworkingManager.shared.fetchImage(from: coffees.file) { result in
+            switch result {
+            case .success(let imageData):
+                self.coffeeImageView.image = UIImage(data: imageData)
+            case .failure(let error):
+                print(error)
+            }
+            
+//    DispatchQueue.global().async {
+//        guard let url = URL(string: coffees.file ?? "Error") else { return }
+//        guard let imageData = try? Data(contentsOf: url) else { return }
+//
+//        DispatchQueue.main.async {
+//            self.coffeeImageView.image = UIImage(data: imageData)
         }
     }
-}
 }

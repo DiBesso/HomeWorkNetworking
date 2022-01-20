@@ -12,13 +12,29 @@ class NetworkingManager {
     static var shared = NetworkingManager()
     private init() {}
     
-    func fetchImageWithAlamofire (_ url: String, completion: @escaping(Result<[Coffee], Error>) -> Void) {
+    func fetchImage(from url: String?, completion: @escaping(Result<Data, Error>) -> Void) {
+        guard let url = URL(string: url ?? "") else {
+            completion(.failure(Error.self as! Error))
+            return
+        }
+        DispatchQueue.global().async {
+            guard let imageData = try? Data(contentsOf: url) else {
+                completion(.failure(Error.self as! Error))
+                return
+            }
+            DispatchQueue.main.async {
+                completion(.success(imageData))
+            }
+        }
+    }
+    
+    func fetchCoffeeWithAlamofire (_ url: String, completion: @escaping(Result<[Coffee], Error>) -> Void) {
         AF.request(url)
             .validate()
             .responseJSON { dataResponse in
                 switch dataResponse.result {
                 case .success(let value):
-                    let courses = Coffee.getCourses(from: value)
+                    let courses = Coffee.getCoffee(from: value)
                     completion(.success(courses))
                 case .failure:
                     completion(.failure(Error.self as! Error))

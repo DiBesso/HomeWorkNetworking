@@ -13,7 +13,7 @@ class CoffeeCollectionViewController: UICollectionViewController {
     let itemsRow: CGFloat = 2
     let sectionInsets = UIEdgeInsets (top: 20, left: 20, bottom: 20, right: 20)
     
-    var coffees = [Coffee]()
+    var coffees: [Coffee] = []
     var randomPhoto = "https://coffee.alexflipnote.dev/random.json"
     
 
@@ -28,6 +28,7 @@ class CoffeeCollectionViewController: UICollectionViewController {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "coffeeCell", for: indexPath) as! CoffeeCell
 //        NetworkingManager.shared.fetchImage(url: randomPhoto) { coffee in cell.configure(with: coffee)
 //        }
+
         return cell
     }
 
@@ -58,8 +59,8 @@ extension CoffeeCollectionViewController: UICollectionViewDelegateFlowLayout {
 extension CoffeeCollectionViewController {
     
     
-    func fetchImage() {
-        NetworkingManager.shared.fetchImageWithAlamofire(randomPhoto) { result in
+    func fetchCoffee() {
+        NetworkingManager.shared.fetchCoffeeWithAlamofire(randomPhoto) { result in
             switch result {
             case .success(let coffee):
                 self.coffees = coffee
