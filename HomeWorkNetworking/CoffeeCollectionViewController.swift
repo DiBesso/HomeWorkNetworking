@@ -13,7 +13,6 @@ class CoffeeCollectionViewController: UICollectionViewController {
     let itemsRow: CGFloat = 2
     let sectionInsets = UIEdgeInsets (top: 20, left: 20, bottom: 20, right: 20)
     
-    var coffees: [Coffee] = []
     var randomPhoto = "https://coffee.alexflipnote.dev/random.json"
     
 
@@ -26,8 +25,14 @@ class CoffeeCollectionViewController: UICollectionViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "coffeeCell", for: indexPath) as! CoffeeCell
-//        NetworkingManager.shared.fetchImage(url: randomPhoto) { coffee in cell.configure(with: coffee)
-//        }
+        NetworkingManager.shared.fetchCoffeeWithAlamofire(randomPhoto) { result in
+            switch result {
+            case .success(let coffee):
+                cell.configure(with: coffee)
+            case .failure(let error):
+                print(error)
+            }
+        }
 
         return cell
     }
@@ -56,21 +61,10 @@ extension CoffeeCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension CoffeeCollectionViewController {
+//extension CoffeeCollectionViewController {
     
     
-    func fetchCoffee() {
-        NetworkingManager.shared.fetchCoffeeWithAlamofire(randomPhoto) { result in
-            switch result {
-            case .success(let coffee):
-                self.coffees = coffee
-                self.collectionView.reloadData()
-            case .failure(let error):
-                print(error)
-            }
-            
-        }
-    }
+
     
 //    func fetchImage() {
 //        guard let url = URL(string: randomPhoto) else { return }
@@ -93,4 +87,4 @@ extension CoffeeCollectionViewController {
 //        }.resume()
 //
 //    }
-}
+//}

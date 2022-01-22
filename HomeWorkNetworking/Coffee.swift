@@ -14,16 +14,9 @@ struct Coffee: Decodable {
         file = courseData["file"] as? String
     }
     
-        static func getCoffee(from value: Any) -> [Coffee] {
-            guard let coursesData = value as? [[String: Any]] else { return [] }
-    
-            var coffees = [Coffee]()
-    
-            for courseData in coursesData {
-                let coffee = Coffee(courseData: courseData)
-                coffees.append(coffee)
-            }
-            return coffees
+        static func getCoffee(from value: Any) -> Coffee? {
+            guard let courseData = value as? [String: Any] else { return nil }
+                return Coffee(courseData: courseData)
         }
     }
 

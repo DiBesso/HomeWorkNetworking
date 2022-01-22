@@ -28,14 +28,14 @@ class NetworkingManager {
         }
     }
     
-    func fetchCoffeeWithAlamofire (_ url: String, completion: @escaping(Result<[Coffee], Error>) -> Void) {
+    func fetchCoffeeWithAlamofire (_ url: String, completion: @escaping(Result<Coffee, Error>) -> Void) {
         AF.request(url)
             .validate()
             .responseJSON { dataResponse in
                 switch dataResponse.result {
                 case .success(let value):
-                    let courses = Coffee.getCoffee(from: value)
-                    completion(.success(courses))
+                    guard let course = Coffee.getCoffee(from: value) else { return }
+                    completion(.success(course))
                 case .failure:
                     completion(.failure(Error.self as! Error))
                 }
